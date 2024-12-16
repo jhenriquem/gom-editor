@@ -1,11 +1,14 @@
-package utils
+package modes
 
 import (
 	"github.com/gdamore/tcell/v2"
 )
 
-func KeymapsEvents(eventKey *tcell.EventKey, lines *[][]rune, crrCol, crrLine *int) {
+func KeymapsEventsForInsertMode(eventKey *tcell.EventKey, lines *[][]rune, crrCol, crrLine *int) {
 	switch eventKey.Key() {
+
+	case tcell.KeyEscape:
+		CurrentMODE = "NORMAL"
 
 	case tcell.KeyDelete:
 		if *crrCol < len((*lines)[*crrLine]) {
