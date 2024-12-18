@@ -1,4 +1,4 @@
-package utils
+package render
 
 import (
 	"fmt"
@@ -8,7 +8,7 @@ import (
 	"github.com/jhenriquem/go-neovim/screen"
 )
 
-func DrawText() {
+func RenderLines() {
 	screen.Screen.Clear()
 	stText := tcell.StyleDefault.Foreground(tcell.ColorWhite)
 
