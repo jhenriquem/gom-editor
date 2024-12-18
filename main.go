@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"github.com/gdamore/tcell/v2"
+	"github.com/jhenriquem/go-neovim/global"
 	"github.com/jhenriquem/go-neovim/modes"
 	"github.com/jhenriquem/go-neovim/screen"
 	"github.com/jhenriquem/go-neovim/utils"
@@ -15,14 +16,11 @@ func main() {
 
 	defer screen.Screen.Fini()
 
-	var lines [][]rune // Armazena o texto por linha
+	// Inicialização de lines
+	global.Lines = append(global.Lines, []rune{})
 
-	lines = append(lines, []rune{})
-
-	var currentColumn, currentLine int = 0, 0
-
-	for {
-		utils.DrawText(screen.Screen, lines, &currentColumn, &currentLine)
+	for global.RunningApp {
+		utils.DrawText()
 
 		ev := screen.Screen.PollEvent()
 
@@ -31,15 +29,10 @@ func main() {
 			screen.Screen.Sync() // Redesenhar em caso de redimensionamento
 
 		case *tcell.EventKey:
-
 			if modes.CurrentMODE == "NORMAL" {
-
-				if ev.Rune() == 113 {
-					return
-				}
 				modes.KeymapsEventsForNormalMode(ev)
 			} else if modes.CurrentMODE == "INSERT" {
-				modes.KeymapsEventsForInsertMode(ev, &lines, &currentColumn, &currentLine)
+				modes.KeymapsEventsForInsertMode(ev)
 			}
 		}
 	}
