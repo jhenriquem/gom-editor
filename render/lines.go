@@ -8,25 +8,39 @@ import (
 	"github.com/jhenriquem/go-neovim/screen"
 )
 
-func RenderLines() {
+func RenderLines(screenHeight int) {
 	screen.Screen.Clear()
+
 	stText := tcell.StyleDefault.Foreground(tcell.ColorWhite)
+	stLineNumber := tcell.StyleDefault.Foreground(tcell.ColorYellow)
 
-	for y, line := range global.Lines {
-		lineNumber := fmt.Sprintf("%4d ", y+1)
+	visibleEnd := global.ScrollOffSet + screenHeight - 3
 
-		stLineNumber := tcell.StyleDefault.Foreground(tcell.ColorYellow)
+	for i := 0; i < screenHeight-3; i++ {
+		lineIndex := global.ScrollOffSet + i
 
-		for x, char := range lineNumber {
-			screen.Screen.SetContent(x, y, char, nil, stLineNumber)
+		if lineIndex >= len(global.Lines) {
+			break // Evita desenhar fora do buffer
 		}
 
-		for x, char := range line {
-			screen.Screen.SetContent(x+5, y, char, nil, stText)
+		lineNumber := fmt.Sprintf("%4d ", lineIndex+1)
+		for x, char := range lineNumber {
+			screen.Screen.SetContent(x, i, char, nil, stLineNumber)
+		}
+
+		for x, char := range global.Lines[lineIndex] {
+			screen.Screen.SetContent(x+5, i, char, nil, stText)
 		}
 	}
 
-	// Exibir cursor
-	screen.Screen.ShowCursor(global.CurrentColumn+5, global.CurrentLine)
+	// Ajustar o cursor dentro da área visível
+	if global.CurrentLine < global.ScrollOffSet {
+		global.ScrollOffSet = global.CurrentLine
+	} else if global.CurrentLine >= visibleEnd {
+		global.ScrollOffSet = global.CurrentLine - (screenHeight - 3) + 1
+	}
+
+	cursorScreenRow := global.CurrentLine - global.ScrollOffSet
+	screen.Screen.ShowCursor(global.CurrentColumn+5, cursorScreenRow)
 	screen.Screen.Show()
 }

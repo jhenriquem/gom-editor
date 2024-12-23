@@ -3,9 +3,11 @@ package modes
 import (
 	"github.com/gdamore/tcell/v2"
 	"github.com/jhenriquem/go-neovim/global"
+	"github.com/jhenriquem/go-neovim/screen"
 )
 
 func KeymapsEventsForInsertMode(eventKey *tcell.EventKey) {
+	_, screenHeight := screen.Screen.Size()
 	switch eventKey.Key() {
 
 	case tcell.KeyEscape:
@@ -17,6 +19,7 @@ func KeymapsEventsForInsertMode(eventKey *tcell.EventKey) {
 		}
 
 	case tcell.KeyEnter:
+
 		currLineText := (global.Lines)[global.CurrentLine][global.CurrentColumn:]
 		(global.Lines)[global.CurrentLine] = (global.Lines)[global.CurrentLine][:global.CurrentColumn]
 
@@ -27,16 +30,32 @@ func KeymapsEventsForInsertMode(eventKey *tcell.EventKey) {
 		global.CurrentLine++
 		global.CurrentColumn = 0
 
+		// aplicação do scroll
+		if global.CurrentLine >= global.ScrollOffSet+screenHeight-global.ScrollOffNumber {
+			global.ScrollOffSet++
+		}
+
 	case tcell.KeyBackspace, tcell.KeyBackspace2:
 		if global.CurrentColumn > 0 {
+
 			global.CurrentColumn--
 			(global.Lines)[global.CurrentLine] = append((global.Lines)[global.CurrentLine][:global.CurrentColumn], (global.Lines)[global.CurrentLine][global.CurrentColumn+1:]...)
+
 		} else if global.CurrentLine > 0 {
+
 			prevLine := (global.Lines)[global.CurrentLine-1]
 			global.CurrentColumn = len(prevLine)
+
 			(global.Lines)[global.CurrentLine-1] = append(prevLine, (global.Lines)[global.CurrentLine]...)
+
 			global.Lines = append((global.Lines)[:global.CurrentLine], (global.Lines)[global.CurrentLine+1:]...)
 			global.CurrentLine--
+
+			// aplicação do scroll
+			if global.CurrentLine < global.ScrollOffSet+global.ScrollOffNumber && global.ScrollOffSet >= 1 {
+				global.ScrollOffSet--
+			}
+
 		}
 
 	case tcell.KeyLeft:
@@ -56,8 +75,12 @@ func KeymapsEventsForInsertMode(eventKey *tcell.EventKey) {
 		}
 
 	case tcell.KeyUp:
+
 		if global.CurrentLine > 0 {
 			global.CurrentLine--
+			if global.CurrentLine < global.ScrollOffSet+global.ScrollOffNumber && global.ScrollOffSet >= 1 {
+				global.ScrollOffSet--
+			}
 			if global.CurrentColumn > len((global.Lines)[global.CurrentLine]) {
 				global.CurrentColumn = len((global.Lines)[global.CurrentLine])
 			}
@@ -68,6 +91,9 @@ func KeymapsEventsForInsertMode(eventKey *tcell.EventKey) {
 			global.CurrentLine++
 			if global.CurrentColumn > len((global.Lines)[global.CurrentLine]) {
 				global.CurrentColumn = len((global.Lines)[global.CurrentLine])
+			}
+			if global.CurrentLine >= global.ScrollOffSet+screenHeight-global.ScrollOffNumber {
+				global.ScrollOffSet++
 			}
 		}
 

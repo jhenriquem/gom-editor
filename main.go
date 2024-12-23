@@ -4,7 +4,7 @@ import (
 	"log"
 
 	"github.com/gdamore/tcell/v2"
-	"github.com/jhenriquem/go-neovim/global"
+	gb "github.com/jhenriquem/go-neovim/global"
 	"github.com/jhenriquem/go-neovim/modes"
 	"github.com/jhenriquem/go-neovim/render"
 	"github.com/jhenriquem/go-neovim/screen"
@@ -12,14 +12,25 @@ import (
 
 func main() {
 	log.Println("Iniciando o programa...")
+
 	screen.ScreenInitializer()
 	defer screen.Screen.Fini()
 
-	// Inicialização de lines
-	global.Lines = append(global.Lines, []rune{})
+	_, ScreenHeight := screen.Screen.Size()
 
-	for global.RunningApp {
-		render.RenderLines()
+	if gb.CurrentLine < gb.ScrollOffSet {
+		gb.ScrollOffSet = gb.CurrentLine
+	}
+
+	if gb.CurrentLine >= gb.ScrollOffSet+ScreenHeight-1 {
+		gb.ScrollOffSet = gb.CurrentLine - (ScreenHeight - 1)
+	}
+
+	// Inicialização de lines
+	gb.Lines = make([][]rune, 1)
+
+	for gb.RunningApp {
+		render.RenderLines(ScreenHeight)
 		render.RenderStatusLine()
 		render.RenderCommandLine()
 
