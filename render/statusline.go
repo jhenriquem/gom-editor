@@ -13,7 +13,7 @@ func RenderStatusLine() {
 	width, height := screen.Screen.Size()
 
 	// Estilo da barra de status
-	bgStyle := tcell.StyleDefault.Background(tcell.ColorBlack).Foreground(tcell.ColorYellow)
+	bgStyle := tcell.StyleDefault.Background(tcell.ColorReset).Foreground(tcell.ColorGreen)
 
 	// Formatar texto da barra de status
 	status := fmt.Sprintf(" %s | %d/%d ", modes.CurrentMODE, global.CurrentLine+1, global.CurrentColumn+1)
