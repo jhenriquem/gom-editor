@@ -30,9 +30,13 @@ func main() {
 	gb.Lines = make([][]rune, 1)
 
 	for gb.RunningApp {
-		render.RenderLines(ScreenHeight)
+
+		if modes.CurrentMODE != "COMMAND" {
+			render.RenderLines(ScreenHeight)
+		} else {
+			render.RenderCommandLine()
+		}
 		render.RenderStatusLine()
-		render.RenderCommandLine()
 
 		ev := screen.Screen.PollEvent()
 
@@ -41,11 +45,7 @@ func main() {
 			screen.Screen.Sync() // Redesenhar em caso de redimensionamento
 
 		case *tcell.EventKey:
-			if modes.CurrentMODE == "NORMAL" {
-				modes.KeymapsEventsForNormalMode(ev)
-			} else if modes.CurrentMODE == "INSERT" {
-				modes.KeymapsEventsForInsertMode(ev)
-			}
+			modes.KeymapsLogicModes(ev)
 		}
 	}
 }

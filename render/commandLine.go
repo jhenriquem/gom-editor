@@ -20,5 +20,6 @@ func RenderCommandLine() {
 		screen.Screen.SetContent(x, height-1, char, nil, bgStyle)
 	}
 	// Atualizar a tela
+	screen.Screen.ShowCursor(global.CurrentColumn, height-1)
 	screen.Screen.Show()
 }

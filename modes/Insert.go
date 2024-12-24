@@ -6,7 +6,7 @@ import (
 	"github.com/jhenriquem/go-neovim/screen"
 )
 
-func KeymapsEventsForInsertMode(eventKey *tcell.EventKey) {
+func KeymapsInsert(eventKey *tcell.EventKey) {
 	_, screenHeight := screen.Screen.Size()
 	switch eventKey.Key() {
 

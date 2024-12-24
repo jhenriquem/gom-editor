@@ -5,11 +5,9 @@ import (
 	"github.com/jhenriquem/go-neovim/global"
 )
 
-func KeymapsEventsForNormalMode(eventKey *tcell.EventKey) {
+func KeymapsNormal(eventKey *tcell.EventKey) {
 	switch eventKey.Rune() {
 
-	case 'q':
-		global.RunningApp = false
 	case 'i':
 		CurrentMODE = "INSERT"
 
@@ -45,5 +43,8 @@ func KeymapsEventsForNormalMode(eventKey *tcell.EventKey) {
 			}
 		}
 
+	case ':':
+		global.CurrentColumn = 1
+		CurrentMODE = "COMMAND"
 	}
 }
