@@ -4,20 +4,20 @@ import (
 	"fmt"
 
 	"github.com/gdamore/tcell/v2"
+	"github.com/jhenriquem/go-neovim/config"
 	"github.com/jhenriquem/go-neovim/global"
-	"github.com/jhenriquem/go-neovim/screen"
+	"github.com/jhenriquem/go-neovim/internal/screen"
 )
 
 func RenderLines(screenHeight int) {
 	screen.Screen.Clear()
-
 	stText := tcell.StyleDefault.Foreground(tcell.ColorWhite)
 	stLineNumber := tcell.StyleDefault.Foreground(tcell.ColorYellow)
 
-	visibleEnd := global.ScrollOffSet + screenHeight - 3
+	visibleEnd := config.ScrollOffSet + screenHeight - 3
 
 	for i := 0; i < screenHeight-3; i++ {
-		lineIndex := global.ScrollOffSet + i
+		lineIndex := config.ScrollOffSet + i
 
 		if lineIndex >= len(global.Lines) {
 			break // Evita desenhar fora do buffer
@@ -34,13 +34,13 @@ func RenderLines(screenHeight int) {
 	}
 
 	// Ajustar o cursor dentro da área visível
-	if global.CurrentLine < global.ScrollOffSet {
-		global.ScrollOffSet = global.CurrentLine
+	if global.CurrentLine < config.ScrollOffSet {
+		config.ScrollOffSet = global.CurrentLine
 	} else if global.CurrentLine >= visibleEnd {
-		global.ScrollOffSet = global.CurrentLine - (screenHeight - 3) + 1
+		config.ScrollOffSet = global.CurrentLine - (screenHeight - 3) + 1
 	}
 
-	cursorScreenRow := global.CurrentLine - global.ScrollOffSet
+	cursorScreenRow := global.CurrentLine - config.ScrollOffSet
 	screen.Screen.ShowCursor(global.CurrentColumn+5, cursorScreenRow)
 	screen.Screen.Show()
 }

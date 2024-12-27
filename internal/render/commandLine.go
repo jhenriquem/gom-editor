@@ -3,7 +3,7 @@ package render
 import (
 	"github.com/gdamore/tcell/v2"
 	"github.com/jhenriquem/go-neovim/global"
-	"github.com/jhenriquem/go-neovim/screen"
+	"github.com/jhenriquem/go-neovim/internal/screen"
 )
 
 func RenderCommandLine() {

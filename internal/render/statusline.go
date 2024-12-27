@@ -5,8 +5,8 @@ import (
 
 	"github.com/gdamore/tcell/v2"
 	"github.com/jhenriquem/go-neovim/global"
-	"github.com/jhenriquem/go-neovim/modes"
-	"github.com/jhenriquem/go-neovim/screen"
+	"github.com/jhenriquem/go-neovim/internal/modes"
+	"github.com/jhenriquem/go-neovim/internal/screen"
 )
 
 func RenderStatusLine() {
@@ -16,7 +16,7 @@ func RenderStatusLine() {
 	bgStyle := tcell.StyleDefault.Background(tcell.ColorReset).Foreground(tcell.ColorGreen)
 
 	// Formatar texto da barra de status
-	status := fmt.Sprintf(" %s | %d/%d ", modes.CurrentMODE, global.CurrentLine+1, global.CurrentColumn+1)
+	status := fmt.Sprintf(" %s | %d/%d | %s", modes.CurrentMODE, global.CurrentLine+1, global.CurrentColumn+1, global.CurrentFileName)
 	padding := width - len(status)
 
 	if padding < 0 {

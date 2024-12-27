@@ -1,16 +1,27 @@
 package modes
 
 import (
+	"strings"
+
 	"github.com/gdamore/tcell/v2"
 	"github.com/jhenriquem/go-neovim/global"
+	"github.com/jhenriquem/go-neovim/internal/editor"
 )
 
 func CommandsLogic() {
-	commandString := string(global.Command)
-
-	switch commandString {
+	commandString := strings.Split(string(global.Command), " ")
+	switch commandString[0] {
 	case ":q":
 		global.RunningApp = false
+
+	case ":w":
+		isNew := false
+		if len(commandString) == 2 {
+			global.CurrentFileName = commandString[1]
+			isNew = true
+		}
+
+		editor.SaveFile(isNew)
 	}
 }
 

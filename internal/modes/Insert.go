@@ -2,8 +2,9 @@ package modes
 
 import (
 	"github.com/gdamore/tcell/v2"
+	"github.com/jhenriquem/go-neovim/config"
 	"github.com/jhenriquem/go-neovim/global"
-	"github.com/jhenriquem/go-neovim/screen"
+	"github.com/jhenriquem/go-neovim/internal/screen"
 )
 
 func KeymapsInsert(eventKey *tcell.EventKey) {
@@ -31,8 +32,8 @@ func KeymapsInsert(eventKey *tcell.EventKey) {
 		global.CurrentColumn = 0
 
 		// aplicação do scroll
-		if global.CurrentLine >= global.ScrollOffSet+screenHeight-global.ScrollOffNumber {
-			global.ScrollOffSet++
+		if global.CurrentLine >= config.ScrollOffSet+screenHeight-config.ScrollOffNumber {
+			config.ScrollOffSet++
 		}
 
 	case tcell.KeyBackspace, tcell.KeyBackspace2:
@@ -52,8 +53,8 @@ func KeymapsInsert(eventKey *tcell.EventKey) {
 			global.CurrentLine--
 
 			// aplicação do scroll
-			if global.CurrentLine < global.ScrollOffSet+global.ScrollOffNumber && global.ScrollOffSet >= 1 {
-				global.ScrollOffSet--
+			if global.CurrentLine < config.ScrollOffSet+config.ScrollOffNumber && config.ScrollOffSet >= 1 {
+				config.ScrollOffSet--
 			}
 
 		}
@@ -78,8 +79,8 @@ func KeymapsInsert(eventKey *tcell.EventKey) {
 
 		if global.CurrentLine > 0 {
 			global.CurrentLine--
-			if global.CurrentLine < global.ScrollOffSet+global.ScrollOffNumber && global.ScrollOffSet >= 1 {
-				global.ScrollOffSet--
+			if global.CurrentLine < config.ScrollOffSet+config.ScrollOffNumber && config.ScrollOffSet >= 1 {
+				config.ScrollOffSet--
 			}
 			if global.CurrentColumn > len((global.Lines)[global.CurrentLine]) {
 				global.CurrentColumn = len((global.Lines)[global.CurrentLine])
@@ -92,8 +93,8 @@ func KeymapsInsert(eventKey *tcell.EventKey) {
 			if global.CurrentColumn > len((global.Lines)[global.CurrentLine]) {
 				global.CurrentColumn = len((global.Lines)[global.CurrentLine])
 			}
-			if global.CurrentLine >= global.ScrollOffSet+screenHeight-global.ScrollOffNumber {
-				global.ScrollOffSet++
+			if global.CurrentLine >= config.ScrollOffSet+screenHeight-config.ScrollOffNumber {
+				config.ScrollOffSet++
 			}
 		}
 
