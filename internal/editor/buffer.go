@@ -1,45 +1,106 @@
 package editor
 
 import (
-	"bufio"
-	"os"
+	"github.com/jhenriquem/go-nvim/config"
+	"github.com/jhenriquem/go-nvim/internal/screen"
 )
 
-func (this *EditorStruct) ScanFile(file *os.File) {
-	this.Buffer.Text = [][]rune{}
-	lineIndex := 0
-	scanner := bufio.NewScanner(file)
+func (this *BufferStruct) Enter() {
+	// fmt.Printf("CurrentLine: %d, CurrentColumn: %d, BufferSize: %d\n", this.CurrentLine, this.CurrentColumn, len(this.Text))
+	newLineText := this.Text[this.CurrentLine][this.CurrentColumn:]
 
-	for scanner.Scan() {
-		scannedLine := scanner.Text()
-		this.Buffer.Text = append(this.Buffer.Text, []rune{})
-		for _, ch := range scannedLine {
-			this.Buffer.Text[lineIndex] = append(this.Buffer.Text[lineIndex], rune(ch))
+	this.Text[this.CurrentLine] = this.Text[this.CurrentLine][:this.CurrentColumn]
+
+	var laterLines [][]rune = [][]rune{newLineText}
+
+	laterLines = append(laterLines, this.Text[this.CurrentLine+1:]...)
+
+	this.Text = append(this.Text[:this.CurrentLine+1], laterLines...)
+
+	this.CurrentLine++
+	this.CurrentColumn = 0
+
+	_, screenHeight := screen.Screen.Size()
+	if this.CurrentLine >= config.ScrollOffSet+screenHeight-config.ScrollOffNumber {
+		config.ScrollOffSet++
+	}
+}
+
+func (this *BufferStruct) Insert(char rune) {
+	// if this.CurrentLine >= len(this.Text) {
+	// this.Text = append(this.Text, []rune{})
+	// }
+
+	line := this.Text[this.CurrentLine]
+
+	// Insere o caractere na posição correta
+	this.Text[this.CurrentLine] = append(line[:this.CurrentColumn], append([]rune{char}, line[this.CurrentColumn:]...)...)
+
+	this.CurrentColumn++
+}
+
+func (this *BufferStruct) BackSpace() {
+	if this.CurrentColumn > 0 {
+
+		this.CurrentColumn--
+
+		this.Text[this.CurrentLine] = append(this.Text[this.CurrentLine][:this.CurrentColumn], this.Text[this.CurrentLine][this.CurrentColumn+1:]...)
+
+	} else if this.CurrentLine > 0 {
+
+		prevLine := this.Text[this.CurrentLine-1]
+		this.CurrentColumn = len(prevLine)
+
+		this.Text[this.CurrentLine-1] = append(prevLine, this.Text[this.CurrentLine]...)
+
+		this.Text = append(this.Text[:this.CurrentLine], (this.Text)[this.CurrentLine+1:]...)
+		this.CurrentLine--
+
+		// aplicação do scroll
+		if this.CurrentLine < config.ScrollOffSet+config.ScrollOffNumber && config.ScrollOffSet >= 1 {
+			config.ScrollOffSet--
 		}
-		lineIndex++
-	}
-	if lineIndex <= 1 {
-		this.Buffer.Text = append(this.Buffer.Text, []rune{})
+
 	}
 }
 
-func (this *EditorStruct) WriteFile() {
-	file, err := os.Create(this.Currentfile)
-	if err != nil {
-	}
-	writer := bufio.NewWriter(file)
-	for _, line := range this.Buffer.Text {
-		linetoWrite := string(line) + "\n"
-		writer.WriteString(linetoWrite)
-	}
-	writer.Flush()
-}
+func (this *BufferStruct) MoveCursor(rowDelta, colDelta int) {
+	newLine := this.CurrentLine + rowDelta
+	newColumn := this.CurrentColumn + colDelta
 
-func (this *EditorStruct) SaveFile(isNewFile bool) {
-	if !isNewFile {
-		this.CurrentCommand = []rune{'s', 'a', 'v', 'e', ' ', 'f', 'i', 'l', 'e'}
-	} else {
-		this.CurrentCommand = []rune{'c', 'r', 'e', 'a', 't', 'e', ' ', 'f', 'i', 'l', 'e'}
+	// Garantir que o cursor não ultrapasse os limites do buffer
+	if newLine < 0 {
+		newLine = 0
+	} else if newLine >= len(this.Text) {
+		newLine = len(this.Text) - 1
 	}
-	this.WriteFile()
+
+	if newColumn < 0 {
+		if newLine > 0 {
+			newLine--
+			newColumn = len(this.Text[newLine])
+		} else {
+			newColumn = 0
+		}
+	} else if newColumn > len(this.Text[newLine]) {
+		if newLine < len(this.Text)-1 {
+			newLine++
+			newColumn = 0
+		} else {
+			newColumn = len(this.Text[newLine])
+		}
+	}
+
+	this.CurrentLine = newLine
+	this.CurrentColumn = newColumn
+
+	// Atualizar ScrollOffSet
+	_, screenHeight := screen.Screen.Size()
+	visibleHeight := screenHeight - 3
+
+	if this.CurrentLine < config.ScrollOffSet {
+		config.ScrollOffSet = this.CurrentLine
+	} else if this.CurrentLine >= config.ScrollOffSet+visibleHeight {
+		config.ScrollOffSet = this.CurrentLine - visibleHeight + 1
+	}
 }

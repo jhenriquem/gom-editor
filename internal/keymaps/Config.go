@@ -2,7 +2,7 @@ package keymaps
 
 import (
 	"github.com/gdamore/tcell/v2"
-	"github.com/jhenriquem/go-neovim/internal/editor"
+	"github.com/jhenriquem/go-nvim/internal/editor"
 )
 
 func KeymapsLogicModes(eventKey *tcell.EventKey) {

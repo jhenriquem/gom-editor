@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/jhenriquem/go-neovim/internal/editor"
-	"github.com/jhenriquem/go-neovim/internal/src"
+	"github.com/jhenriquem/go-nvim/internal/editor"
+	"github.com/jhenriquem/go-nvim/internal/src"
 )
 
 func main() {

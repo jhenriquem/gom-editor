@@ -4,12 +4,11 @@ import (
 	"fmt"
 
 	"github.com/gdamore/tcell/v2"
-	"github.com/jhenriquem/go-neovim/config"
-	"github.com/jhenriquem/go-neovim/internal/screen"
+	"github.com/jhenriquem/go-nvim/config"
+	"github.com/jhenriquem/go-nvim/internal/screen"
 )
 
 func (this *BufferStruct) RenderBuffer() {
-	// Logica para renderização das linhas perante o tamanho da janela
 	_, screenHeight := screen.Screen.Size()
 
 	if this.CurrentLine < config.ScrollOffSet {
@@ -43,7 +42,6 @@ func (this *BufferStruct) RenderBuffer() {
 		}
 	}
 
-	// Ajustar o cursor dentro da área visível
 	if this.CurrentLine < config.ScrollOffSet {
 		config.ScrollOffSet = this.CurrentLine
 	} else if this.CurrentLine >= visibleEnd {
@@ -80,7 +78,7 @@ func (this *EditorStruct) StatusLine() {
 	bgStyle := tcell.StyleDefault.Background(tcell.ColorReset).Foreground(tcell.ColorGreen)
 
 	// Formatar texto da barra de status
-	status := fmt.Sprintf(" %s | %d/%d | %s", this.Mode, this.Buffer.CurrentLine+1, this.Buffer.CurrentColumn+1, this.Currentfile)
+	status := fmt.Sprintf(" %s | %d/%d | %s | %d", this.Mode, this.Buffer.CurrentLine+1, this.Buffer.CurrentColumn+1, this.Currentfile, len(this.Buffer.Text))
 	padding := width - len(status)
 
 	if padding < 0 {

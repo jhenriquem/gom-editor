@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/gdamore/tcell/v2"
-	"github.com/jhenriquem/go-neovim/internal/editor"
+	"github.com/jhenriquem/go-nvim/internal/editor"
 )
 
 func CommandsLogic() {
@@ -48,6 +48,10 @@ func KeymapsCommand(eventKey *tcell.EventKey) {
 	case tcell.KeyEnter:
 		CommandsLogic()
 		editor.Editor.Mode = "NORMAL"
+		editor.Editor.CurrentCommand = []rune{':'}
+		editor.Editor.Buffer.CurrentLine = 0
+		editor.Editor.Buffer.CurrentColumn = 1
+
 	case tcell.KeyEscape:
 		editor.Editor.Mode = "NORMAL"
 		editor.Editor.CurrentCommand = []rune{':'}
@@ -55,14 +59,10 @@ func KeymapsCommand(eventKey *tcell.EventKey) {
 		editor.Editor.Buffer.CurrentColumn = 1
 
 	case tcell.KeyLeft:
-		if editor.Editor.Buffer.CurrentColumn >= 1 {
-			editor.Editor.Buffer.CurrentColumn--
-		}
+		editor.Editor.Buffer.MoveCursor(0, -1)
 
 	case tcell.KeyRight:
-		if editor.Editor.Buffer.CurrentColumn < len(editor.Editor.CurrentCommand) {
-			editor.Editor.Buffer.CurrentColumn++
-		}
+		editor.Editor.Buffer.MoveCursor(0, 1)
 
 	case tcell.KeyBackspace, tcell.KeyBackspace2:
 		if len(editor.Editor.CurrentCommand) > 1 && editor.Editor.Buffer.CurrentColumn > 1 {

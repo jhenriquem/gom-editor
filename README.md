@@ -1,4 +1,4 @@
-<h1 align="center"> ⌨️ Go Neovim</h1>
+<h1 align="center"> ⌨️ Go Nvim</h1>
 <img src="./assets/img.png"/>
 
 

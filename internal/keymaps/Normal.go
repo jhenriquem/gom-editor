@@ -3,7 +3,7 @@ package keymaps
 import (
 	"github.com/gdamore/tcell/v2"
 
-	"github.com/jhenriquem/go-neovim/internal/editor"
+	"github.com/jhenriquem/go-nvim/internal/editor"
 )
 
 func KeymapsNormal(eventKey *tcell.EventKey) {
@@ -13,36 +13,16 @@ func KeymapsNormal(eventKey *tcell.EventKey) {
 		editor.Editor.Mode = "INSERT"
 
 	case 'h':
-		if editor.Editor.Buffer.CurrentColumn > 0 {
-			editor.Editor.Buffer.CurrentColumn--
-		} else if editor.Editor.Buffer.CurrentLine > 0 {
-			editor.Editor.Buffer.CurrentLine--
-			editor.Editor.Buffer.CurrentColumn = len((editor.Editor.Buffer.Text)[editor.Editor.Buffer.CurrentLine])
-		}
+		editor.Editor.Buffer.MoveCursor(0, -1)
 
 	case 'l':
-		if editor.Editor.Buffer.CurrentColumn < len((editor.Editor.Buffer.Text)[editor.Editor.Buffer.CurrentLine]) {
-			editor.Editor.Buffer.CurrentColumn++
-		} else if editor.Editor.Buffer.CurrentLine < len(editor.Editor.Buffer.Text)-1 {
-			editor.Editor.Buffer.CurrentLine++
-			editor.Editor.Buffer.CurrentColumn = 0
-		}
+		editor.Editor.Buffer.MoveCursor(0, 1)
 
 	case 'k':
-		if editor.Editor.Buffer.CurrentLine > 0 {
-			editor.Editor.Buffer.CurrentLine--
-			if editor.Editor.Buffer.CurrentColumn > len((editor.Editor.Buffer.Text)[editor.Editor.Buffer.CurrentLine]) {
-				editor.Editor.Buffer.CurrentColumn = len((editor.Editor.Buffer.Text)[editor.Editor.Buffer.CurrentLine])
-			}
-		}
+		editor.Editor.Buffer.MoveCursor(-1, 0)
 
 	case 'j':
-		if editor.Editor.Buffer.CurrentLine < len(editor.Editor.Buffer.Text)-1 {
-			editor.Editor.Buffer.CurrentLine++
-			if editor.Editor.Buffer.CurrentColumn > len((editor.Editor.Buffer.Text)[editor.Editor.Buffer.CurrentLine]) {
-				editor.Editor.Buffer.CurrentColumn = len((editor.Editor.Buffer.Text)[editor.Editor.Buffer.CurrentLine])
-			}
-		}
+		editor.Editor.Buffer.MoveCursor(1, 0)
 
 	case ':':
 		editor.Editor.Buffer.CurrentColumn = 1

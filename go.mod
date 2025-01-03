@@ -1,4 +1,4 @@
-module github.com/jhenriquem/go-neovim
+module github.com/jhenriquem/go-nvim
 
 go 1.23.2
 
