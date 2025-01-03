@@ -11,6 +11,7 @@ Me interessei por Go e resolvi estuda-lo, como usuário do [Neovim](https://neov
 - Sistemas de modos (normal, insert, command)
 - Sistemas de comandos e CommandLine 
 - StatusLine 
+- Sistema de Arquivos (criar, ler, editar)
 
 ### Instalação
 
