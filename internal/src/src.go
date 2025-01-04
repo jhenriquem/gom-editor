@@ -1,9 +1,6 @@
 package src
 
 import (
-	"bufio"
-	"os"
-
 	"github.com/gdamore/tcell/v2"
 	"github.com/jhenriquem/go-nvim/internal/editor"
 	"github.com/jhenriquem/go-nvim/internal/keymaps"
@@ -31,16 +28,6 @@ func RunEditor() {
 			screen.Screen.Sync()
 
 		case *tcell.EventKey:
-
-			file, err := os.Create("log.txt")
-			if err != nil {
-			}
-			writer := bufio.NewWriter(file)
-			for _, line := range editor.Editor.Buffer.Text {
-				linetoWrite := string(line) + "\n"
-				writer.WriteString(linetoWrite)
-			}
-			writer.Flush()
 
 			keymaps.KeymapsLogicModes(ev)
 		}
