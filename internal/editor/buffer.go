@@ -6,16 +6,18 @@ import (
 )
 
 func (this *BufferStruct) Enter() {
-	// fmt.Printf("CurrentLine: %d, CurrentColumn: %d, BufferSize: %d\n", this.CurrentLine, this.CurrentColumn, len(this.Text))
 	newLineText := this.Text[this.CurrentLine][this.CurrentColumn:]
 
 	this.Text[this.CurrentLine] = this.Text[this.CurrentLine][:this.CurrentColumn]
 
-	var laterLines [][]rune = [][]rune{newLineText}
+	newText := make([][]rune, 0, len(this.Text)+1)
 
-	laterLines = append(laterLines, this.Text[this.CurrentLine+1:]...)
+	newText = append(newText, this.Text[:this.CurrentLine+1]...)
 
-	this.Text = append(this.Text[:this.CurrentLine+1], laterLines...)
+	newText = append(newText, newLineText)
+	newText = append(newText, this.Text[this.CurrentLine+1:]...)
+
+	this.Text = newText
 
 	this.CurrentLine++
 	this.CurrentColumn = 0
@@ -27,15 +29,15 @@ func (this *BufferStruct) Enter() {
 }
 
 func (this *BufferStruct) Insert(char rune) {
-	// if this.CurrentLine >= len(this.Text) {
-	// this.Text = append(this.Text, []rune{})
-	// }
-
 	line := this.Text[this.CurrentLine]
 
-	// Insere o caractere na posição correta
-	this.Text[this.CurrentLine] = append(line[:this.CurrentColumn], append([]rune{char}, line[this.CurrentColumn:]...)...)
+	newLine := make([]rune, len(line)+1)
 
+	copy(newLine, line[:this.CurrentColumn])
+	newLine[this.CurrentColumn] = char
+	copy(newLine[this.CurrentColumn+1:], line[this.CurrentColumn:])
+
+	this.Text[this.CurrentLine] = newLine
 	this.CurrentColumn++
 }
 
@@ -43,17 +45,29 @@ func (this *BufferStruct) BackSpace() {
 	if this.CurrentColumn > 0 {
 
 		this.CurrentColumn--
+		line := this.Text[this.CurrentLine]
+		newLine := make([]rune, len(line))
 
-		this.Text[this.CurrentLine] = append(this.Text[this.CurrentLine][:this.CurrentColumn], this.Text[this.CurrentLine][this.CurrentColumn+1:]...)
+		copy(newLine, line[:this.CurrentColumn])
+		copy(newLine[this.CurrentColumn:], line[this.CurrentColumn+1:])
+
+		this.Text[this.CurrentLine] = newLine
 
 	} else if this.CurrentLine > 0 {
 
 		prevLine := this.Text[this.CurrentLine-1]
 		this.CurrentColumn = len(prevLine)
 
-		this.Text[this.CurrentLine-1] = append(prevLine, this.Text[this.CurrentLine]...)
+		mergedLine := make([]rune, len(prevLine)+len(this.Text[this.CurrentLine]))
+		copy(mergedLine, prevLine)
+		copy(mergedLine[len(prevLine):], this.Text[this.CurrentLine])
+		this.Text[this.CurrentLine-1] = mergedLine
 
-		this.Text = append(this.Text[:this.CurrentLine], (this.Text)[this.CurrentLine+1:]...)
+		newText := make([][]rune, len(this.Text)-1)
+		copy(newText, this.Text[:this.CurrentLine])
+		copy(newText[this.CurrentLine:], this.Text[this.CurrentLine+1:])
+
+		this.Text = newText
 		this.CurrentLine--
 
 		// aplicação do scroll

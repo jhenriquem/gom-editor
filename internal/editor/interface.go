@@ -20,6 +20,7 @@ func (this *BufferStruct) RenderBuffer() {
 	}
 
 	screen.Screen.Clear()
+
 	stText := tcell.StyleDefault.Foreground(tcell.ColorWhite)
 	stLineNumber := tcell.StyleDefault.Foreground(tcell.ColorYellow)
 
