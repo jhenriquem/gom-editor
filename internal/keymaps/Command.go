@@ -6,6 +6,7 @@ import (
 
 	"github.com/gdamore/tcell/v2"
 	"github.com/jhenriquem/go-nvim/internal/editor"
+	"github.com/jhenriquem/go-nvim/internal/screen"
 )
 
 func CommandsLogic() {
@@ -50,13 +51,15 @@ func KeymapsCommand(eventKey *tcell.EventKey) {
 		editor.Editor.Mode = "NORMAL"
 		editor.Editor.CurrentCommand = []rune{':'}
 		editor.Editor.Buffer.CurrentLine = 0
-		editor.Editor.Buffer.CurrentColumn = 1
+		screen.Screen.SetCursorStyle(tcell.CursorStyleBlinkingBlock)
+		editor.Editor.Buffer.CurrentColumn = 0
 
 	case tcell.KeyEscape:
+		screen.Screen.SetCursorStyle(tcell.CursorStyleBlinkingBlock)
 		editor.Editor.Mode = "NORMAL"
 		editor.Editor.CurrentCommand = []rune{':'}
 		editor.Editor.Buffer.CurrentLine = 0
-		editor.Editor.Buffer.CurrentColumn = 1
+		editor.Editor.Buffer.CurrentColumn = 0
 
 	case tcell.KeyLeft:
 		editor.Editor.Buffer.MoveCursor(0, -1)

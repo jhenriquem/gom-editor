@@ -27,6 +27,7 @@ func (this *EditorStruct) WriteFile() {
 	file, err := os.Create(this.Currentfile)
 	if err != nil {
 	}
+
 	writer := bufio.NewWriter(file)
 	for _, line := range this.Buffer.Text {
 		linetoWrite := string(line) + "\n"
@@ -36,10 +37,14 @@ func (this *EditorStruct) WriteFile() {
 }
 
 func (this *EditorStruct) SaveFile(isNewFile bool) {
-	if !isNewFile {
-		this.CurrentCommand = []rune{'s', 'a', 'v', 'e', ' ', 'f', 'i', 'l', 'e'}
+	if this.Currentfile != "" {
+		this.WriteFile()
+		if isNewFile {
+			this.Message = "Create File"
+		} else {
+			this.Message = "Save file"
+		}
 	} else {
-		this.CurrentCommand = []rune{'c', 'r', 'e', 'a', 't', 'e', ' ', 'f', 'i', 'l', 'e'}
+		this.Message = "Unnamed file"
 	}
-	this.WriteFile()
 }

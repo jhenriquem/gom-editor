@@ -3,6 +3,7 @@ package keymaps
 import (
 	"github.com/gdamore/tcell/v2"
 	"github.com/jhenriquem/go-nvim/internal/editor"
+	"github.com/jhenriquem/go-nvim/internal/screen"
 )
 
 func KeymapsInsert(eventKey *tcell.EventKey) {
@@ -10,6 +11,7 @@ func KeymapsInsert(eventKey *tcell.EventKey) {
 
 	case tcell.KeyEscape:
 		editor.Editor.Mode = "NORMAL"
+		screen.Screen.SetCursorStyle(tcell.CursorStyleBlinkingBlock)
 
 	case tcell.KeyDelete:
 		line := editor.Editor.Buffer.Text[editor.Editor.Buffer.CurrentLine]

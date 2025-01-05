@@ -18,7 +18,7 @@ func ScreenInitializer() {
 	}
 
 	// Definer o estilo da tela
-	stScreen := tcell.StyleDefault.Background(tcell.ColorReset).Foreground(tcell.ColorReset)
+	stScreen := tcell.StyleDefault.Background(tcell.Color233).Foreground(tcell.ColorReset)
 	Screen.SetStyle(stScreen)
 	Screen.Clear()
 	Screen.Show()

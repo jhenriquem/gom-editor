@@ -34,6 +34,7 @@ func (this *BufferStruct) Insert(char rune) {
 	newLine := make([]rune, len(line)+1)
 
 	copy(newLine, line[:this.CurrentColumn])
+
 	newLine[this.CurrentColumn] = char
 	copy(newLine[this.CurrentColumn+1:], line[this.CurrentColumn:])
 

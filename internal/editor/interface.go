@@ -21,8 +21,8 @@ func (this *BufferStruct) RenderBuffer() {
 
 	screen.Screen.Clear()
 
-	stText := tcell.StyleDefault.Foreground(tcell.ColorWhite)
-	stLineNumber := tcell.StyleDefault.Foreground(tcell.ColorYellow)
+	stText := tcell.StyleDefault.Background(tcell.Color233).Foreground(tcell.Color250)
+	stLineNumber := tcell.StyleDefault.Background(tcell.Color235).Foreground(tcell.Color240)
 
 	visibleEnd := config.ScrollOffSet + screenHeight - 3
 
@@ -39,7 +39,7 @@ func (this *BufferStruct) RenderBuffer() {
 		}
 
 		for x, char := range this.Text[lineIndex] {
-			screen.Screen.SetContent(x+5, i, char, nil, stText)
+			screen.Screen.SetContent(x+7, i, char, nil, stText)
 		}
 	}
 
@@ -50,14 +50,14 @@ func (this *BufferStruct) RenderBuffer() {
 	}
 
 	cursorScreenRow := this.CurrentLine - config.ScrollOffSet
-	screen.Screen.ShowCursor(this.CurrentColumn+5, cursorScreenRow)
+	screen.Screen.ShowCursor(this.CurrentColumn+7, cursorScreenRow)
 	screen.Screen.Show()
 }
 
 func (this *EditorStruct) CommandLine() {
 	width, height := screen.Screen.Size()
 
-	bgStyle := tcell.StyleDefault.Background(tcell.ColorReset).Foreground(tcell.ColorWhite)
+	bgStyle := tcell.StyleDefault.Background(tcell.Color233).Foreground(tcell.Color249)
 
 	for x := 0; x < width; x++ {
 		char := ' '
@@ -75,11 +75,16 @@ func (this *EditorStruct) CommandLine() {
 func (this *EditorStruct) StatusLine() {
 	width, height := screen.Screen.Size()
 
-	// Estilo da barra de status
-	bgStyle := tcell.StyleDefault.Background(tcell.ColorReset).Foreground(tcell.ColorGreen)
+	bgStyle := tcell.StyleDefault.Background(tcell.Color234).Foreground(tcell.Color249)
 
-	// Formatar texto da barra de status
-	status := fmt.Sprintf(" %s | %d/%d | %s | %d", this.Mode, this.Buffer.CurrentLine+1, this.Buffer.CurrentColumn+1, this.Currentfile, len(this.Buffer.Text))
+	nameFile := this.Currentfile
+
+	if this.Currentfile == "" {
+		nameFile = "Empty"
+	}
+
+	status := fmt.Sprintf(" %s  %s  %d/%d", this.Mode, nameFile, this.Buffer.CurrentLine+1, this.Buffer.CurrentColumn+1)
+
 	padding := width - len(status)
 
 	if padding < 0 {
@@ -94,6 +99,19 @@ func (this *EditorStruct) StatusLine() {
 		}
 		screen.Screen.SetContent(x, height-2, char, nil, bgStyle)
 	}
+
+	indexMsg := 0
+
+	bgStyleMsg := tcell.StyleDefault.Background(tcell.Color234).Foreground(tcell.Color208)
+	for x := (width / 2) - 8; x < (width/2)+8; x++ {
+		char := ' '
+		if indexMsg < len(this.Message) {
+			char = rune(this.Message[indexMsg])
+			indexMsg++
+		}
+		screen.Screen.SetContent(x, height-2, char, nil, bgStyleMsg)
+	}
+
 	// Atualizar a tela
 	screen.Screen.Show()
 }
