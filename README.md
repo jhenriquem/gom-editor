@@ -59,5 +59,5 @@ go build -o go-nvim.exe ./cmd/main.go
 ```
 
 #### Ispirações
-- [Neovim]("https://github.com/neovim/neovim") Vim-fork focado em extensibilidade e usabilidade
-- [Gkilo]("https://github.com/vcnovaes/gkilo") Um editor de texto escrito em Go
+- [Neovim](https://github.com/neovim/neovim) Vim-fork focado em extensibilidade e usabilidade
+- [Gkilo](https://github.com/vcnovaes/gkilo) Um editor de texto escrito em Go
