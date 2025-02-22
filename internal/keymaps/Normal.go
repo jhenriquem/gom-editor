@@ -15,20 +15,20 @@ func KeymapsNormal(eventKey *tcell.EventKey) {
 		screen.Screen.SetCursorStyle(tcell.CursorStyleBlinkingBar)
 
 	case 'h':
-		editor.Editor.Buffer.MoveCursor(0, -1)
+		editor.Editor.CrrBuffer.MoveCursor(0, -1)
 
 	case 'l':
-		editor.Editor.Buffer.MoveCursor(0, 1)
+		editor.Editor.CrrBuffer.MoveCursor(0, 1)
 
 	case 'k':
-		editor.Editor.Buffer.MoveCursor(-1, 0)
+		editor.Editor.CrrBuffer.MoveCursor(-1, 0)
 
 	case 'j':
-		editor.Editor.Buffer.MoveCursor(1, 0)
+		editor.Editor.CrrBuffer.MoveCursor(1, 0)
 
 	case ':':
 		screen.Screen.SetCursorStyle(tcell.CursorStyleBlinkingBar)
-		editor.Editor.Buffer.CurrentColumn = 1
+		editor.Editor.CrrBuffer.CurrentColumn = 1
 		editor.Editor.Mode = "COMMAND"
 	}
 }

@@ -21,6 +21,6 @@ func CommandLine() {
 		screen.Screen.SetContent(x, height-1, char, nil, bgStyle)
 	}
 	// Atualizar a tela
-	screen.Screen.ShowCursor(editor.Editor.Buffer.CurrentColumn, height-1)
+	screen.Screen.ShowCursor(editor.Editor.CrrBuffer.CurrentColumn, height-1)
 	screen.Screen.Show()
 }

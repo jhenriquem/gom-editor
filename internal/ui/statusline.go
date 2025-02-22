@@ -14,13 +14,13 @@ func StatusLine() {
 
 	bgStyle := tcell.StyleDefault.Background(config.ColorBgStatusLine).Foreground(config.ColorFgStatusLine)
 
-	nameFile := editor.Editor.Currentfile
+	nameFile := editor.Editor.CrrBuffer.NameFile
 
-	if editor.Editor.Currentfile == "" {
+	if editor.Editor.CrrBuffer.NameFile == "" {
 		nameFile = "Empty"
 	}
 
-	status := fmt.Sprintf(" %s  %s  %d/%d", editor.Editor.Mode, nameFile, editor.Editor.Buffer.CurrentLine+1, editor.Editor.Buffer.CurrentColumn+1)
+	status := fmt.Sprintf(" %s  %s  %d/%d", editor.Editor.Mode, nameFile, editor.Editor.CrrBuffer.CurrentLine+1, editor.Editor.CrrBuffer.CurrentColumn+1)
 
 	padding := width - len(status)
 

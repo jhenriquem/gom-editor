@@ -14,32 +14,32 @@ func KeymapsInsert(eventKey *tcell.EventKey) {
 		screen.Screen.SetCursorStyle(tcell.CursorStyleBlinkingBlock)
 
 	case tcell.KeyDelete:
-		line := editor.Editor.Buffer.Text[editor.Editor.Buffer.CurrentLine]
-		if editor.Editor.Buffer.CurrentColumn < len(line) {
-			editor.Editor.Buffer.Text[editor.Editor.Buffer.CurrentLine] = append(line[:editor.Editor.Buffer.CurrentColumn], line[editor.Editor.Buffer.CurrentColumn+1:]...)
+		line := editor.Editor.CrrBuffer.Text[editor.Editor.CrrBuffer.CurrentLine]
+		if editor.Editor.CrrBuffer.CurrentColumn < len(line) {
+			editor.Editor.CrrBuffer.Text[editor.Editor.CrrBuffer.CurrentLine] = append(line[:editor.Editor.CrrBuffer.CurrentColumn], line[editor.Editor.CrrBuffer.CurrentColumn+1:]...)
 		}
 
 	case tcell.KeyBackspace, tcell.KeyBackspace2:
-		editor.Editor.Buffer.BackSpace()
+		editor.Editor.CrrBuffer.BackSpace()
 
 	case tcell.KeyLeft:
-		editor.Editor.Buffer.MoveCursor(0, -1)
+		editor.Editor.CrrBuffer.MoveCursor(0, -1)
 
 	case tcell.KeyRight:
-		editor.Editor.Buffer.MoveCursor(0, 1)
+		editor.Editor.CrrBuffer.MoveCursor(0, 1)
 
 	case tcell.KeyUp:
-		editor.Editor.Buffer.MoveCursor(-1, 0)
+		editor.Editor.CrrBuffer.MoveCursor(-1, 0)
 
 	case tcell.KeyDown:
-		editor.Editor.Buffer.MoveCursor(1, 0)
+		editor.Editor.CrrBuffer.MoveCursor(1, 0)
 
 	case tcell.KeyEnter:
-		editor.Editor.Buffer.Enter()
+		editor.Editor.CrrBuffer.Enter()
 
 	default:
 		if eventKey.Rune() != 0 {
-			editor.Editor.Buffer.Insert(eventKey.Rune())
+			editor.Editor.CrrBuffer.Insert(eventKey.Rune())
 		}
 	}
 }

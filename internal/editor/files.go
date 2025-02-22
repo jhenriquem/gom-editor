@@ -3,33 +3,57 @@ package editor
 import (
 	"bufio"
 	"os"
+
+	"github.com/jhenriquem/go-nvim/internal/buffer"
 )
 
 func (this *EditorStruct) ScanFile(file *os.File) {
-	this.Buffer.Text = [][]rune{}
+	// Se o arquivo existir na lista de buffers
+	Exist := false
+
+	for i, buffer := range this.Buffers {
+		if buffer.NameFile == file.Name() {
+			this.CrrBuffer = &this.Buffers[i]
+			this.CrrBufferIndex = i
+			Exist = true
+		}
+	}
+
+	if Exist {
+		return
+	}
+
+	// Se o arquivo não existir na lista de buffers
+	newBuffer := buffer.BufferStruct{NameFile: file.Name()}
+
+	this.Buffers = append(this.Buffers, newBuffer)
+	this.CrrBuffer = &this.Buffers[len(this.Buffers)-1]
+
+	this.CrrBufferIndex = len(this.Buffers) - 1
+
 	lineIndex := 0
 	scanner := bufio.NewScanner(file)
 
 	for scanner.Scan() {
 		scannedLine := scanner.Text()
-		this.Buffer.Text = append(this.Buffer.Text, []rune{})
+		this.CrrBuffer.Text = append(this.CrrBuffer.Text, []rune{})
 		for _, ch := range scannedLine {
-			this.Buffer.Text[lineIndex] = append(this.Buffer.Text[lineIndex], rune(ch))
+			this.CrrBuffer.Text[lineIndex] = append(this.CrrBuffer.Text[lineIndex], rune(ch))
 		}
 		lineIndex++
 	}
 	if lineIndex <= 1 {
-		this.Buffer.Text = append(this.Buffer.Text, []rune{})
+		this.CrrBuffer.Text = append(this.CrrBuffer.Text, []rune{})
 	}
 }
 
 func (this *EditorStruct) WriteFile() {
-	file, err := os.Create(this.Currentfile)
+	file, err := os.Create(this.CrrBuffer.NameFile)
 	if err != nil {
 	}
 
 	writer := bufio.NewWriter(file)
-	for _, line := range this.Buffer.Text {
+	for _, line := range this.CrrBuffer.Text {
 		linetoWrite := string(line) + "\n"
 		writer.WriteString(linetoWrite)
 	}
@@ -37,7 +61,7 @@ func (this *EditorStruct) WriteFile() {
 }
 
 func (this *EditorStruct) SaveFile(isNewFile bool) string {
-	if this.Currentfile != "" {
+	if this.CrrBuffer.NameFile != "" {
 		this.WriteFile()
 		if isNewFile {
 			return "create"
