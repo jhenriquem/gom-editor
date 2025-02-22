@@ -5,6 +5,7 @@ import (
 	"github.com/jhenriquem/go-nvim/internal/editor"
 	"github.com/jhenriquem/go-nvim/internal/keymaps"
 	"github.com/jhenriquem/go-nvim/internal/screen"
+	"github.com/jhenriquem/go-nvim/internal/ui"
 )
 
 func RunEditor() {
@@ -14,11 +15,11 @@ func RunEditor() {
 	for editor.Editor.Running {
 
 		if editor.Editor.Mode != "COMMAND" {
-			editor.Editor.Buffer.RenderBuffer()
+			ui.Editor()
 		} else {
-			editor.Editor.CommandLine()
+			ui.CommandLine()
 		}
-		editor.Editor.StatusLine()
+		ui.StatusLine()
 
 		ev := screen.Screen.PollEvent()
 

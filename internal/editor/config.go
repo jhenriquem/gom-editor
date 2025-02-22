@@ -2,20 +2,14 @@ package editor
 
 import (
 	"os"
+
+	"github.com/jhenriquem/go-nvim/internal/buffer"
 )
 
-type BufferStruct struct {
-	Text          [][]rune
-	CurrentColumn int
-	CurrentLine   int
-	IsModificed   bool
-}
-
 type EditorStruct struct {
-	Message        string
 	Mode           string
 	Currentfile    string
-	Buffer         BufferStruct
+	Buffer         buffer.BufferStruct
 	Running        bool
 	CurrentCommand []rune
 }
@@ -34,9 +28,6 @@ func (this *EditorStruct) LoadArgsFile() {
 
 func (this *EditorStruct) Init() {
 	this.Running = true
-	this.Buffer.CurrentColumn, this.Buffer.CurrentLine = 0, 0
-
-	this.Message = "Hello World, GO Nvim"
 
 	this.Buffer.Text = append(this.Buffer.Text, []rune{})
 	this.CurrentCommand = []rune{':'}

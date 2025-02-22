@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"github.com/gdamore/tcell/v2"
+	"github.com/jhenriquem/go-nvim/config"
 )
 
 var Screen, err = tcell.NewScreen()
@@ -18,7 +19,7 @@ func ScreenInitializer() {
 	}
 
 	// Definer o estilo da tela
-	stScreen := tcell.StyleDefault.Background(tcell.Color233).Foreground(tcell.ColorReset)
+	stScreen := tcell.StyleDefault.Background(config.ColorBg).Foreground(tcell.ColorReset)
 	Screen.SetStyle(stScreen)
 	Screen.Clear()
 	Screen.Show()

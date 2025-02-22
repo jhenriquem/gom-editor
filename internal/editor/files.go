@@ -36,15 +36,15 @@ func (this *EditorStruct) WriteFile() {
 	writer.Flush()
 }
 
-func (this *EditorStruct) SaveFile(isNewFile bool) {
+func (this *EditorStruct) SaveFile(isNewFile bool) string {
 	if this.Currentfile != "" {
 		this.WriteFile()
 		if isNewFile {
-			this.Message = "Create File"
+			return "create"
 		} else {
-			this.Message = "Save file"
+			return "save"
 		}
 	} else {
-		this.Message = "Unnamed file"
+		return "unnamed file"
 	}
 }
