@@ -1,4 +1,4 @@
-package ui
+package renderer
 
 import (
 	"fmt"
@@ -9,15 +9,15 @@ import (
 	"github.com/jhenriquem/Gom/internal/screen"
 )
 
-func Editor() {
+func Buffer() {
 	_, screenHeight := screen.Screen.Size()
 
-	if editor.Editor.CrrBuffer.CurrentLine < config.ScrollOffSet {
-		config.ScrollOffSet = editor.Editor.CrrBuffer.CurrentLine
+	if editor.GOM.CrrBuffer.CurrentLine < config.ScrollOffSet {
+		config.ScrollOffSet = editor.GOM.CrrBuffer.CurrentLine
 	}
 
-	if editor.Editor.CrrBuffer.CurrentLine >= config.ScrollOffSet+screenHeight-1 {
-		config.ScrollOffSet = editor.Editor.CrrBuffer.CurrentLine - (screenHeight - 1)
+	if editor.GOM.CrrBuffer.CurrentLine >= config.ScrollOffSet+screenHeight-1 {
+		config.ScrollOffSet = editor.GOM.CrrBuffer.CurrentLine - (screenHeight - 1)
 	}
 
 	screen.Screen.Clear()
@@ -30,7 +30,7 @@ func Editor() {
 	for i := 0; i < screenHeight-3; i++ {
 		lineIndex := config.ScrollOffSet + i
 
-		if lineIndex >= len(editor.Editor.CrrBuffer.Text) {
+		if lineIndex >= len(editor.GOM.CrrBuffer.Text) {
 			break // Evita desenhar fora do buffer
 		}
 
@@ -39,18 +39,18 @@ func Editor() {
 			screen.Screen.SetContent(x, i, char, nil, stLineNumber)
 		}
 
-		for x, char := range editor.Editor.CrrBuffer.Text[lineIndex] {
+		for x, char := range editor.GOM.CrrBuffer.Text[lineIndex] {
 			screen.Screen.SetContent(x+7, i, char, nil, stText)
 		}
 	}
 
-	if editor.Editor.CrrBuffer.CurrentLine < config.ScrollOffSet {
-		config.ScrollOffSet = editor.Editor.CrrBuffer.CurrentLine
-	} else if editor.Editor.CrrBuffer.CurrentLine >= visibleEnd {
-		config.ScrollOffSet = editor.Editor.CrrBuffer.CurrentLine - (screenHeight - 3) + 1
+	if editor.GOM.CrrBuffer.CurrentLine < config.ScrollOffSet {
+		config.ScrollOffSet = editor.GOM.CrrBuffer.CurrentLine
+	} else if editor.GOM.CrrBuffer.CurrentLine >= visibleEnd {
+		config.ScrollOffSet = editor.GOM.CrrBuffer.CurrentLine - (screenHeight - 3) + 1
 	}
 
-	cursorScreenRow := editor.Editor.CrrBuffer.CurrentLine - config.ScrollOffSet
-	screen.Screen.ShowCursor(editor.Editor.CrrBuffer.CurrentColumn+7, cursorScreenRow)
+	cursorScreenRow := editor.GOM.CrrBuffer.CurrentLine - config.ScrollOffSet
+	screen.Screen.ShowCursor(editor.GOM.CrrBuffer.CurrentColumn+7, cursorScreenRow)
 	screen.Screen.Show()
 }

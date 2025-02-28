@@ -10,12 +10,12 @@ var (
 // Color configuration
 var (
 	ColorBg            = tcell.ColorNone
-	ColorFgText        = tcell.Color250
+	ColorFgText        = tcell.ColorWhite
 	ColorBgText        = tcell.ColorNone
-	ColorFgLineNumber  = tcell.Color240
+	ColorFgLineNumber  = tcell.ColorGray
 	ColorBgLineNumber  = tcell.ColorNone
 	ColorBgStatusLine  = tcell.Color234
-	ColorFgStatusLine  = tcell.Color249
+	ColorFgStatusLine  = ColorFgText
 	ColorBgCommandLine = tcell.ColorNone
-	ColorFgCommandLine = tcell.Color249
+	ColorFgCommandLine = ColorFgText
 )

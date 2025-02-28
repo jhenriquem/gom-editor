@@ -14,7 +14,7 @@ func (this *EditorStruct) ScanFile(file *os.File) {
 	for i, buffer := range this.Buffers {
 		if buffer.NameFile == file.Name() {
 			this.CrrBuffer = &this.Buffers[i]
-			this.CrrBufferIndex = i
+			this.CrrBffIndex = i
 			Exist = true
 		}
 	}
@@ -29,7 +29,7 @@ func (this *EditorStruct) ScanFile(file *os.File) {
 	this.Buffers = append(this.Buffers, newBuffer)
 	this.CrrBuffer = &this.Buffers[len(this.Buffers)-1]
 
-	this.CrrBufferIndex = len(this.Buffers) - 1
+	this.CrrBffIndex = len(this.Buffers) - 1
 
 	lineIndex := 0
 	scanner := bufio.NewScanner(file)

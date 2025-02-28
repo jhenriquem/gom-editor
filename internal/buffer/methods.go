@@ -5,117 +5,117 @@ import (
 	"github.com/jhenriquem/Gom/internal/screen"
 )
 
-func (this *BufferStruct) Enter() {
-	newLineText := this.Text[this.CurrentLine][this.CurrentColumn:]
+func (b *BufferStruct) Enter() {
+	newLineText := b.Text[b.CurrentLine][b.CurrentColumn:]
 
-	this.Text[this.CurrentLine] = this.Text[this.CurrentLine][:this.CurrentColumn]
+	b.Text[b.CurrentLine] = b.Text[b.CurrentLine][:b.CurrentColumn]
 
-	newText := make([][]rune, 0, len(this.Text)+1)
+	newText := make([][]rune, 0, len(b.Text)+1)
 
-	newText = append(newText, this.Text[:this.CurrentLine+1]...)
+	newText = append(newText, b.Text[:b.CurrentLine+1]...)
 
 	newText = append(newText, newLineText)
-	newText = append(newText, this.Text[this.CurrentLine+1:]...)
+	newText = append(newText, b.Text[b.CurrentLine+1:]...)
 
-	this.Text = newText
+	b.Text = newText
 
-	this.CurrentLine++
-	this.CurrentColumn = 0
+	b.CurrentLine++
+	b.CurrentColumn = 0
 
 	_, screenHeight := screen.Screen.Size()
-	if this.CurrentLine >= config.ScrollOffSet+screenHeight-config.ScrollOffNumber {
+	if b.CurrentLine >= config.ScrollOffSet+screenHeight-config.ScrollOffNumber {
 		config.ScrollOffSet++
 	}
 }
 
-func (this *BufferStruct) Insert(char rune) {
-	line := this.Text[this.CurrentLine]
+func (b *BufferStruct) Insert(char rune) {
+	line := b.Text[b.CurrentLine]
 
 	newLine := make([]rune, len(line)+1)
 
-	copy(newLine, line[:this.CurrentColumn])
+	copy(newLine, line[:b.CurrentColumn])
 
-	newLine[this.CurrentColumn] = char
-	copy(newLine[this.CurrentColumn+1:], line[this.CurrentColumn:])
+	newLine[b.CurrentColumn] = char
+	copy(newLine[b.CurrentColumn+1:], line[b.CurrentColumn:])
 
-	this.Text[this.CurrentLine] = newLine
-	this.CurrentColumn++
+	b.Text[b.CurrentLine] = newLine
+	b.CurrentColumn++
 }
 
-func (this *BufferStruct) BackSpace() {
-	if this.CurrentColumn > 0 {
+func (b *BufferStruct) BackSpace() {
+	if b.CurrentColumn > 0 {
 
-		this.CurrentColumn--
-		line := this.Text[this.CurrentLine]
+		b.CurrentColumn--
+		line := b.Text[b.CurrentLine]
 		newLine := make([]rune, len(line))
 
-		copy(newLine, line[:this.CurrentColumn])
-		copy(newLine[this.CurrentColumn:], line[this.CurrentColumn+1:])
+		copy(newLine, line[:b.CurrentColumn])
+		copy(newLine[b.CurrentColumn:], line[b.CurrentColumn+1:])
 
-		this.Text[this.CurrentLine] = newLine
+		b.Text[b.CurrentLine] = newLine
 
-	} else if this.CurrentLine > 0 {
+	} else if b.CurrentLine > 0 {
 
-		prevLine := this.Text[this.CurrentLine-1]
-		this.CurrentColumn = len(prevLine)
+		prevLine := b.Text[b.CurrentLine-1]
+		b.CurrentColumn = len(prevLine)
 
-		mergedLine := make([]rune, len(prevLine)+len(this.Text[this.CurrentLine]))
+		mergedLine := make([]rune, len(prevLine)+len(b.Text[b.CurrentLine]))
 		copy(mergedLine, prevLine)
-		copy(mergedLine[len(prevLine):], this.Text[this.CurrentLine])
-		this.Text[this.CurrentLine-1] = mergedLine
+		copy(mergedLine[len(prevLine):], b.Text[b.CurrentLine])
+		b.Text[b.CurrentLine-1] = mergedLine
 
-		newText := make([][]rune, len(this.Text)-1)
-		copy(newText, this.Text[:this.CurrentLine])
-		copy(newText[this.CurrentLine:], this.Text[this.CurrentLine+1:])
+		newText := make([][]rune, len(b.Text)-1)
+		copy(newText, b.Text[:b.CurrentLine])
+		copy(newText[b.CurrentLine:], b.Text[b.CurrentLine+1:])
 
-		this.Text = newText
-		this.CurrentLine--
+		b.Text = newText
+		b.CurrentLine--
 
 		// aplicação do scroll
-		if this.CurrentLine < config.ScrollOffSet+config.ScrollOffNumber && config.ScrollOffSet >= 1 {
+		if b.CurrentLine < config.ScrollOffSet+config.ScrollOffNumber && config.ScrollOffSet >= 1 {
 			config.ScrollOffSet--
 		}
 
 	}
 }
 
-func (this *BufferStruct) MoveCursor(rowDelta, colDelta int) {
-	newLine := this.CurrentLine + rowDelta
-	newColumn := this.CurrentColumn + colDelta
+func (b *BufferStruct) MoveCursor(rowDelta, colDelta int) {
+	newLine := b.CurrentLine + rowDelta
+	newColumn := b.CurrentColumn + colDelta
 
 	// Garantir que o cursor não ultrapasse os limites do buffer
 	if newLine < 0 {
 		newLine = 0
-	} else if newLine >= len(this.Text) {
-		newLine = len(this.Text) - 1
+	} else if newLine >= len(b.Text) {
+		newLine = len(b.Text) - 1
 	}
 
 	if newColumn < 0 {
 		if newLine > 0 {
 			newLine--
-			newColumn = len(this.Text[newLine])
+			newColumn = len(b.Text[newLine])
 		} else {
 			newColumn = 0
 		}
-	} else if newColumn > len(this.Text[newLine]) {
-		if newLine < len(this.Text)-1 {
+	} else if newColumn > len(b.Text[newLine]) {
+		if newLine < len(b.Text)-1 {
 			newLine++
 			newColumn = 0
 		} else {
-			newColumn = len(this.Text[newLine])
+			newColumn = len(b.Text[newLine])
 		}
 	}
 
-	this.CurrentLine = newLine
-	this.CurrentColumn = newColumn
+	b.CurrentLine = newLine
+	b.CurrentColumn = newColumn
 
 	// Atualizar ScrollOffSet
 	_, screenHeight := screen.Screen.Size()
 	visibleHeight := screenHeight - 3
 
-	if this.CurrentLine < config.ScrollOffSet {
-		config.ScrollOffSet = this.CurrentLine
-	} else if this.CurrentLine >= config.ScrollOffSet+visibleHeight {
-		config.ScrollOffSet = this.CurrentLine - visibleHeight + 1
+	if b.CurrentLine < config.ScrollOffSet {
+		config.ScrollOffSet = b.CurrentLine
+	} else if b.CurrentLine >= config.ScrollOffSet+visibleHeight {
+		config.ScrollOffSet = b.CurrentLine - visibleHeight + 1
 	}
 }

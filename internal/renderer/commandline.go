@@ -1,4 +1,4 @@
-package ui
+package renderer
 
 import (
 	"github.com/gdamore/tcell/v2"
@@ -8,6 +8,10 @@ import (
 )
 
 func CommandLine() {
+	if editor.GOM.CrrMode != "COMMAND" {
+		return
+	}
+
 	width, height := screen.Screen.Size()
 
 	bgStyle := tcell.StyleDefault.Background(config.ColorBgCommandLine).Foreground(config.ColorFgCommandLine)
@@ -15,12 +19,12 @@ func CommandLine() {
 	for x := 0; x < width; x++ {
 		char := ' '
 
-		if x < len(editor.Editor.CurrentCommand) {
-			char = editor.Editor.CurrentCommand[x]
+		if x < len(editor.GOM.CrrCommand) {
+			char = editor.GOM.CrrCommand[x]
 		}
 		screen.Screen.SetContent(x, height-1, char, nil, bgStyle)
 	}
 	// Atualizar a tela
-	screen.Screen.ShowCursor(editor.Editor.CrrBuffer.CurrentColumn, height-1)
+	screen.Screen.ShowCursor(editor.GOM.CrrBuffer.CurrentColumn, height-1)
 	screen.Screen.Show()
 }
