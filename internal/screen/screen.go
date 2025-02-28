@@ -4,7 +4,7 @@ import (
 	"log"
 
 	"github.com/gdamore/tcell/v2"
-	"github.com/jhenriquem/go-nvim/config"
+	"github.com/jhenriquem/Gom/config"
 )
 
 var Screen, err = tcell.NewScreen()

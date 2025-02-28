@@ -2,9 +2,9 @@ package ui
 
 import (
 	"github.com/gdamore/tcell/v2"
-	"github.com/jhenriquem/go-nvim/config"
-	"github.com/jhenriquem/go-nvim/internal/editor"
-	"github.com/jhenriquem/go-nvim/internal/screen"
+	"github.com/jhenriquem/Gom/config"
+	"github.com/jhenriquem/Gom/internal/editor"
+	"github.com/jhenriquem/Gom/internal/screen"
 )
 
 func CommandLine() {

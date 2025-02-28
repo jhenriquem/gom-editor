@@ -1,8 +1,10 @@
 package main
 
 import (
-	"github.com/jhenriquem/go-nvim/internal/editor"
-	"github.com/jhenriquem/go-nvim/internal/src"
+	"github.com/jheriquem/Gom/internal/editor"
+	"github.com/jheriquem/Gom/internal/src"
+	// "github.com/jhenriquem/Gom/internal/editor"
+	// "github.com/jhenriquem/Gom/internal/src"
 )
 
 func main() {

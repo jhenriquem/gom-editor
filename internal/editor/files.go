@@ -4,7 +4,7 @@ import (
 	"bufio"
 	"os"
 
-	"github.com/jhenriquem/go-nvim/internal/buffer"
+	"github.com/jhenriquem/Gom/internal/buffer"
 )
 
 func (this *EditorStruct) ScanFile(file *os.File) {
