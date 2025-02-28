@@ -2,10 +2,10 @@ package src
 
 import (
 	"github.com/gdamore/tcell/v2"
-	"github.com/jhenriquem/go-nvim/internal/editor"
-	"github.com/jhenriquem/go-nvim/internal/keymaps"
-	"github.com/jhenriquem/go-nvim/internal/screen"
-	"github.com/jhenriquem/go-nvim/internal/ui"
+	"github.com/jhenriquem/Gom/internal/editor"
+	"github.com/jhenriquem/Gom/internal/keymaps"
+	"github.com/jhenriquem/Gom/internal/screen"
+	"github.com/jhenriquem/Gom/internal/ui"
 )
 
 func RunEditor() {

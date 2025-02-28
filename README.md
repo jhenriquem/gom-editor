@@ -1,4 +1,4 @@
-<h2 align="center"> Go Nvim</h2>
+<h2 align="center"> Gom</h2>
 <img src="./assets/img.png"/>
 
 Me interessei por Go e resolvi estudá-lo. Recentemente, tive a vontade de criar um projeto em Go que escapasse de uma API Rest.
@@ -53,9 +53,9 @@ go run ./cmd/main.go
 ```
 #### Executar o build 
 ```bash
-go build -o go-nvim.exe ./cmd/main.go
+go build -o Gom.exe ./cmd/main.go
 
-./go-nvim.exe [ file ]
+./Gom.exe [ file ]
 ```
 
 #### Ispirações

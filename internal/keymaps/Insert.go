@@ -2,8 +2,8 @@ package keymaps
 
 import (
 	"github.com/gdamore/tcell/v2"
-	"github.com/jhenriquem/go-nvim/internal/editor"
-	"github.com/jhenriquem/go-nvim/internal/screen"
+	"github.com/jhenriquem/Gom/internal/editor"
+	"github.com/jhenriquem/Gom/internal/screen"
 )
 
 func KeymapsInsert(eventKey *tcell.EventKey) {

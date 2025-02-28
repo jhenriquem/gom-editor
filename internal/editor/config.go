@@ -3,7 +3,7 @@ package editor
 import (
 	"os"
 
-	"github.com/jhenriquem/go-nvim/internal/buffer"
+	"github.com/jhenriquem/Gom/internal/buffer"
 )
 
 type EditorStruct struct {
