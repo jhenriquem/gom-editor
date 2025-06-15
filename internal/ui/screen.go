@@ -24,3 +24,8 @@ func InitScreen() tcell.Screen {
 
 	return screen
 }
+
+func Load(lines []string, coordinates []int) {
+	Buffer(lines, coordinates[1])
+	Cursor(coordinates[0], coordinates[1])
+}

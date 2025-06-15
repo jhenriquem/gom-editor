@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/gdamore/tcell/v2"
+	"github.com/jhenriquem/gom-editor/internal/core"
 	"github.com/jhenriquem/gom-editor/internal/ui"
 )
 
@@ -10,14 +11,15 @@ func main() {
 
 	defer s.Fini()
 
-	for {
+	core.Init()
 
-		// for editor.GOM.Running {
-		//
-		// 	renderer.Buffer()
-		// 	renderer.CommandLine()
-		// 	renderer.StatusLine()
-		//
+	for core.Running {
+
+		lines := core.Gom.Buffers[core.Gom.IndexBuffer].Lines
+		coordinates := []int{core.Gom.Buffers[core.Gom.IndexBuffer].CursorX, core.Gom.Buffers[core.Gom.IndexBuffer].CursorY}
+
+		ui.Load(lines, coordinates)
+
 		ev := s.PollEvent()
 
 		switch ev := ev.(type) {
@@ -25,7 +27,7 @@ func main() {
 			s.Sync()
 		case *tcell.EventKey:
 			if ev.Key() == tcell.KeyEsc {
-				return
+				core.Running = false
 			}
 			// 		keymap.Input(ev)
 		}
