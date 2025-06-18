@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"github.com/gdamore/tcell/v2"
+	"github.com/jhenriquem/gom-editor/internal/gom"
 )
 
 var screen tcell.Screen
@@ -25,7 +26,11 @@ func InitScreen() tcell.Screen {
 	return screen
 }
 
-func Load(lines []string, coordinates []int) {
+func Load(buffer *gom.Buffer) {
+	lines := buffer.Lines
+	coordinates := []int{buffer.CursorX, buffer.CursorY}
+
 	Buffer(lines, coordinates[1])
 	Cursor(coordinates[0], coordinates[1])
+	Status(buffer.Filename, buffer.IsModified, buffer.CursorX, buffer.CursorY)
 }
