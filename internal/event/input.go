@@ -19,10 +19,10 @@ func KeyInput(eventKey *tcell.EventKey) {
 		buffer.MoveCursor(-1, 0)
 	case tcell.KeyDown:
 		buffer.MoveCursor(1, 0)
-	// case tcell.KeyEnter:
-	// buffer.Enter()
-	// case tcell.KeyBackspace, tcell.KeyBackspace2:
-	// buffer.BackSpace()
+	case tcell.KeyEnter:
+		buffer.EnterLine()
+	case tcell.KeyBackspace, tcell.KeyBackspace2:
+		buffer.BackSpace()
 	// case tcell.KeyDelete:
 	// event.DeleteInInsertMode()
 	default:

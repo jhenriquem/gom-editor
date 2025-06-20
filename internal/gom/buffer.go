@@ -23,6 +23,67 @@ func (b *Buffer) Insert(char rune) {
 	b.CursorX++
 }
 
+func (b *Buffer) EnterLine() {
+	newLine := b.Lines[b.CursorY][b.CursorX:]
+	originalLine := b.Lines[b.CursorY][:b.CursorX]
+
+	nextLines := make([]string, len(b.Lines[b.CursorY+1:]))
+	copy(nextLines, b.Lines[b.CursorY+1:])
+
+	b.Lines[b.CursorY] = originalLine
+	b.Lines = append(b.Lines[:b.CursorY+1], append([]string{newLine}, nextLines...)...)
+
+	b.CursorY++
+	b.CursorX = 0
+
+	screenHeight := settings.ScreenHeight
+	if b.CursorY >= settings.ScrollOffSet+screenHeight-settings.ScrollOffNumber {
+		settings.ScrollOffSet++
+	}
+}
+
+func (b *Buffer) DeleteKey() {
+
+}
+
+func (b *Buffer) BackSpace() {
+	if b.CursorX > 0 {
+
+		b.CursorX--
+		line := b.Lines[b.CursorY]
+		var newLine string = ""
+
+		newLine += line[:b.CursorX]
+		newLine += line[b.CursorX+1:]
+
+		b.Lines[b.CursorY] = newLine
+
+	} else if b.CursorY > 0 {
+
+		prevLine := b.Lines[b.CursorY-1]
+		b.CursorX = len(prevLine)
+
+		var mergedLine string = ""
+		mergedLine += prevLine
+		mergedLine += b.Lines[b.CursorY]
+		b.Lines[b.CursorY-1] = mergedLine
+
+		newText := make([]string, len(b.Lines)-1)
+		copy(newText, b.Lines[:b.CursorY])
+		copy(newText[b.CursorY:], b.Lines[b.CursorY+1:])
+
+		b.Lines = newText
+		b.CursorY--
+
+		// aplicação do scroll
+		if b.CursorY < settings.ScrollOffSet+settings.ScrollOffNumber && settings.ScrollOffSet >= 1 {
+			settings.ScrollOffSet--
+		}
+
+	}
+
+}
+
 func (b *Buffer) MoveCursor(rowDelta, colDelta int) {
 	newY := b.CursorY + rowDelta
 	newX := b.CursorX + colDelta
