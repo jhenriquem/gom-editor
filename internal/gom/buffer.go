@@ -43,7 +43,19 @@ func (b *Buffer) EnterLine() {
 }
 
 func (b *Buffer) DeleteKey() {
+	line := b.Lines[b.CursorY]
+	if b.CursorX < len(line) {
+		b.Lines[b.CursorY] = line[:b.CursorX]
+		b.Lines[b.CursorY] += line[b.CursorX+1:]
 
+	} else if b.CursorX == len(line) && len(b.Lines) > 1 && b.CursorY < len(b.Lines)-1 {
+
+		prevLine := b.Lines[:b.CursorY]
+		nextLines := b.Lines[b.CursorY+1:]
+
+		b.Lines = prevLine
+		b.Lines = append(b.Lines, nextLines...)
+	}
 }
 
 func (b *Buffer) BackSpace() {
@@ -81,7 +93,6 @@ func (b *Buffer) BackSpace() {
 		}
 
 	}
-
 }
 
 func (b *Buffer) MoveCursor(rowDelta, colDelta int) {

@@ -23,8 +23,8 @@ func KeyInput(eventKey *tcell.EventKey) {
 		buffer.EnterLine()
 	case tcell.KeyBackspace, tcell.KeyBackspace2:
 		buffer.BackSpace()
-	// case tcell.KeyDelete:
-	// event.DeleteInInsertMode()
+	case tcell.KeyDelete:
+		buffer.DeleteKey()
 	default:
 		if eventKey.Rune() != 0 {
 			buffer.Insert(eventKey.Rune())
