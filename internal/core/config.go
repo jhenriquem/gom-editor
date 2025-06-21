@@ -9,7 +9,7 @@ var Gom g.Editor
 func Init() {
 	Gom = g.Editor{}
 	newbuffer := g.Buffer{
-		Lines:   []string{"skdjnsdknd", "sdkskdjnsd", "klsjnksjn"},
+		Lines:   []string{""},
 		CursorX: 0,
 		CursorY: 0,
 	}

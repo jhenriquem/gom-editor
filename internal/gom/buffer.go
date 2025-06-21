@@ -36,8 +36,7 @@ func (b *Buffer) EnterLine() {
 	b.CursorY++
 	b.CursorX = 0
 
-	screenHeight := settings.ScreenHeight
-	if b.CursorY >= settings.ScrollOffSet+screenHeight-settings.ScrollOffNumber {
+	if b.CursorY >= settings.ScrollOffSet+settings.ScreenHeight-settings.ScrollOffNumber {
 		settings.ScrollOffSet++
 	}
 }
@@ -91,6 +90,9 @@ func (b *Buffer) BackSpace() {
 		if b.CursorY < settings.ScrollOffSet+settings.ScrollOffNumber && settings.ScrollOffSet >= 1 {
 			settings.ScrollOffSet--
 		}
+		if b.CursorY >= settings.ScrollOffSet+settings.ScreenHeight-settings.ScrollOffNumber {
+			settings.ScrollOffSet++
+		}
 
 	}
 }
@@ -126,11 +128,18 @@ func (b *Buffer) MoveCursor(rowDelta, colDelta int) {
 	b.CursorX = newX
 
 	// Atualizar ScrollOffSet
-	visibleHeight := settings.ScreenHeight - 3
+	// visibleHeight := settings.ScreenHeight - 3
 
-	if b.CursorY < settings.ScrollOffSet {
-		settings.ScrollOffSet = b.CursorY
-	} else if b.CursorY >= settings.ScrollOffSet+visibleHeight {
-		settings.ScrollOffSet = b.CursorY - visibleHeight + 1
+	if b.CursorY < settings.ScrollOffSet+settings.ScrollOffNumber && settings.ScrollOffSet >= 1 {
+		settings.ScrollOffSet--
 	}
+	if b.CursorY >= settings.ScrollOffSet+settings.ScreenHeight-settings.ScrollOffNumber {
+		settings.ScrollOffSet++
+	}
+
+	// if b.CursorY < settings.ScrollOffSet {
+	// 	settings.ScrollOffSet = b.CursorY
+	// } else if b.CursorY >= settings.ScrollOffSet+visibleHeight {
+	// 	settings.ScrollOffSet = b.CursorY - visibleHeight + 1
+	// }
 }

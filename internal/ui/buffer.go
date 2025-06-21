@@ -16,14 +16,12 @@ func Buffer(lines []string, cod_Y int) {
 		settings.ScrollOffSet = cod_Y - (screenHeight - 1)
 	}
 
-	screen.Clear()
-
 	stText := tcell.StyleDefault.Background(tcell.ColorNone).Foreground(tcell.ColorWhite)
 	stLineNumber := tcell.StyleDefault.Background(tcell.ColorNone).Foreground(tcell.ColorBlue)
 
-	visibleEnd := settings.ScrollOffSet + screenHeight - 3
+	visibleEnd := settings.ScrollOffSet + screenHeight - 2
 
-	for i := 0; i < screenHeight-3; i++ {
+	for i := 0; i < screenHeight; i++ {
 		lineIndex := settings.ScrollOffSet + i
 
 		if lineIndex >= len(lines) {
@@ -43,6 +41,6 @@ func Buffer(lines []string, cod_Y int) {
 	if cod_Y < settings.ScrollOffSet {
 		settings.ScrollOffSet = cod_Y
 	} else if cod_Y >= visibleEnd {
-		settings.ScrollOffSet = cod_Y - (screenHeight - 3) + 1
+		settings.ScrollOffSet = cod_Y - screenHeight - 2
 	}
 }

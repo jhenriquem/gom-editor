@@ -7,7 +7,8 @@ import (
 
 func Cursor(cod_X, cod_Y int) {
 	screen.SetCursorStyle(tcell.CursorStyleBlinkingBar)
+
 	cursorScreenRow := cod_Y - settings.ScrollOffSet
+
 	screen.ShowCursor(cod_X+7, cursorScreenRow)
-	screen.Show()
 }

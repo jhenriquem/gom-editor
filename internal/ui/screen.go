@@ -30,7 +30,11 @@ func Load(buffer *gom.Buffer) {
 	lines := buffer.Lines
 	coordinates := []int{buffer.CursorX, buffer.CursorY}
 
+	screen.Clear()
+
 	Buffer(lines, coordinates[1])
+
 	Cursor(coordinates[0], coordinates[1])
+
 	Status(buffer.Filename, buffer.IsModified, buffer.CursorX, buffer.CursorY)
 }
