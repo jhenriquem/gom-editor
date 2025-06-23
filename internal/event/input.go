@@ -10,7 +10,7 @@ func KeyInput(eventKey *tcell.EventKey) {
 
 	switch eventKey.Key() {
 	case tcell.KeyEscape:
-		core.Running = false
+		core.Running = !CloseEditor()
 	case tcell.KeyLeft:
 		buffer.MoveCursor(0, -1)
 	case tcell.KeyRight:
@@ -31,4 +31,7 @@ func KeyInput(eventKey *tcell.EventKey) {
 		}
 
 	}
+
+	// Verifica se o arquivo foi modificado
+	ModificedFile()
 }

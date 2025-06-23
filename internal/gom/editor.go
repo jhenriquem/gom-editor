@@ -1,5 +1,7 @@
 package gom
 
+import fileio "github.com/jhenriquem/gom-editor/internal/file_io"
+
 type Editor struct {
 	Buffers     []Buffer
 	IndexBuffer int
@@ -7,4 +9,11 @@ type Editor struct {
 
 func (e *Editor) GetCurrentBuffer() *Buffer {
 	return &e.Buffers[e.IndexBuffer]
+}
+
+func (e *Editor) OpenFile(filename string) {
+	text := fileio.Scan(filename)
+
+	e.GetCurrentBuffer().Filename = filename
+	e.GetCurrentBuffer().Lines = text
 }

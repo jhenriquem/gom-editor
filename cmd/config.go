@@ -1,6 +1,8 @@
-package main
+package cmd
 
 import (
+	"os"
+
 	"github.com/gdamore/tcell/v2"
 	"github.com/jhenriquem/gom-editor/internal/core"
 	"github.com/jhenriquem/gom-editor/internal/event"
@@ -8,12 +10,17 @@ import (
 	"github.com/jhenriquem/gom-editor/internal/ui"
 )
 
-func main() {
+func Execute() {
 	s := ui.InitScreen()
 
 	defer s.Fini()
 
 	core.Init()
+
+	if len(os.Args) > 1 {
+		filename := os.Args[1]
+		core.Gom.OpenFile(filename)
+	}
 
 	for core.Running {
 
