@@ -9,6 +9,8 @@ func KeyInput(eventKey *tcell.EventKey) {
 	buffer := core.Gom.GetCurrentBuffer()
 
 	switch eventKey.Key() {
+	case tcell.KeyCtrlS:
+		Savefile()
 	case tcell.KeyEscape:
 		core.Running = !CloseEditor()
 	case tcell.KeyLeft:

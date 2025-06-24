@@ -14,6 +14,9 @@ func (e *Editor) GetCurrentBuffer() *Buffer {
 func (e *Editor) OpenFile(filename string) {
 	text := fileio.Scan(filename)
 
+	if len(text) == 0 {
+		text = []string{""}
+	}
 	e.GetCurrentBuffer().Filename = filename
 	e.GetCurrentBuffer().Lines = text
 }
