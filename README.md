@@ -1,4 +1,5 @@
 # 🚀 Gom Editor  
+<img src="./assets/editor.gif">
 
 Um editor de texto via terminal escrito em go. Um projeto de estudos. 
 
