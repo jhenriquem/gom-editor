@@ -34,16 +34,9 @@ gom-editor/
 git clone https://github.com/jhenriquem/gom-editor
 cd gom-editor
 ```
-
-2. Instale todas os pacotes
-```bash
-go mod tidy
-```
-3. Compile e execute 
-```bash
-go build -o gom.exe 
-
-./gom.exe [nome do arquivo] 
+2. Rode o executavel 
+```bash 
+./exec/gom.exe
 ```
 
 
